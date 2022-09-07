@@ -4,11 +4,13 @@
       <div class="invitation-cover">
         <div class="cover-content" :class="{'invitation-up':isOpening}">
           <div class="content-inside">
-            <img class="content-inside-photo" src="../images/photo.jpg">
+            <img class="content-inside-photo" src="../images/wedding.jpeg">
             <p>我们结婚啦！</p>
-            <p><b>Jun & undefined</b></p>
-            <p>时间：invalid date value</p>
-            <p>地点：<b>location can not be found</b></p>
+            <p><b>张奥 & 胡芮</b></p>
+            <p>婚庆时间：2022年9月24日 下午15点整</p>
+            <p>婚庆地点：<b>云南省玉溪市江川区澄川线31公里处柏田庄园</b></p>
+            <p>晚宴时间：2022年9月24日 下午17点30分</p>
+            <p>婚庆地点：<b>云南省玉溪市江川区宁海路36号江川宾馆</b></p>
             <div class="content-inside-bless">
               <input
                 placeholder="写下你的祝福" 
@@ -35,6 +37,7 @@
 </template>
 
 <script>
+  import wxapi from "@/wxsdk";
 export default {
   props: ['canOpen'],
   data() {
@@ -44,6 +47,9 @@ export default {
       isFocused: false,
       hasEntered: false
     }
+  },
+  mounted() {
+    wxapi.wxRegister(this.wxRegCallback());
   },
   methods: {
     // 打开邀请函
@@ -69,7 +75,50 @@ export default {
           this.$emit('sendBarrage', this.wish)
         }, 660)
       })
-    }
+    },wxRegCallback() {
+      // 用于微信JS-SDK回调
+      this.wxShareTimeline();
+      this.wxShareAppMessage();
+    },
+    wxShareTimeline() {
+      // 微信自定义分享到朋友圈
+      let option = {
+        title: "test", // 自定义分享标题
+        link: "http://zhangaoo.com", // 自定义分享路径
+        imgUrl: "",
+        success: () => {
+          // this.$toast("分享成功");
+        },
+        cancel: function () {
+          this.$toast("已取消分享");
+        },
+        error: () => {
+          this.$toast("分享失败");
+        },
+      };
+      // 将配置注入通用方法
+      wxapi.ShareTimeline(option);
+    },
+    wxShareAppMessage() {
+      // 微信自定义分享给朋友
+      let option = {
+        title: "test",
+        link: "http://zhangaoo.com",
+        imgUrl: "",
+        success: () => {
+          // this.$toast("分享成功");
+        },
+        cancel: function () {
+          this.$toast("已取消分享");
+        },
+        error: () => {
+          this.$toast("分享失败");
+        },
+      };
+      // 将配置注入通用方法
+      console.log(option, "分享链接");
+      wxapi.ShareAppMessage(option);
+    },
   }
 }
 </script>
@@ -137,7 +186,7 @@ export default {
             text-align: center;
             overflow: auto;
             .content-inside-photo{
-              width: 100%;
+              width: 62%;
               margin-bottom: 10px;
               padding: 5px;
               border: 1px solid #f7debb;
