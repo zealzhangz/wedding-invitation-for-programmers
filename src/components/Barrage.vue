@@ -20,6 +20,7 @@
 
 <script>
   import data from '../mock/data'
+  import axios from 'axios'
 
   export default {
     props: ['wish', 'canStart'],
@@ -29,6 +30,21 @@
         animationStyle:'',
         initialOffset: 0
       }
+    },
+    mounted() {
+      const url = "https://springboot-ojdf-5653-4-1313699246.sh.run.tcloudbase.com/api/list";
+      axios.get(url, { headers:{ 'Content-Type': 'application/json;charset=UTF-8' }}
+      ).then((data) => {
+        if(data && data.data && data.data.data && data.data.data.length > 0){
+          for (let i = 0; i < data.data.data.length;i++) {
+            this.barrages.push(data.data.data[i].text)
+          }
+        } else {
+          console.log(data)
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
     },
     computed: {
       codeInStyleTag: function () {
