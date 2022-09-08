@@ -37,7 +37,8 @@
 </template>
 
 <script>
-  import wxapi from "@/wxsdk";
+  // import wxapi from "@/wxsdk";
+  import axios from 'axios'
 export default {
   props: ['canOpen'],
   data() {
@@ -49,7 +50,54 @@ export default {
     }
   },
   mounted() {
-    wxapi.wxRegister(this.wxRegCallback());
+    // wxapi.wxRegister(this.wxRegCallback());
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    const url = "https://springboot-ojdf-5653-4-1313699246.sh.run.tcloudbase.com/api/config";
+    axios.get(url, { headers:{ 'Content-Type': 'application/json;charset=UTF-8' }}
+    ).then((data) => {
+      wx.config({
+        debug: false, // 开启调试模式
+        appId: data.data.data.appId, // 必填，公众号的唯一标识
+        timestamp: data.data.data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.data.data.nonceStr, // 必填，生成签名的随机串
+        signature: data.data.data.signature, // 必填，签名
+        jsApiList: [
+          'onMenuShareAppMessage', //旧的接口，即将废弃
+          'onMenuShareTimeline' //旧的接口，即将废弃
+        ]
+      });
+      wx.ready(function(){
+        // 分享给好友
+        wx.onMenuShareAppMessage({
+          title: '张奥和胡芮的婚礼', // 分享标题
+          desc: '张奥和胡芮的婚礼', // 分享描述
+          link: 'https://zhangaoo.com/wedding/', // 分享链接
+          imgUrl: 'https://zhangaoo.com/wedding/img/wedding.73c64515.jpeg', // 分享图标
+          success: function () {
+            console.log('ShareAppMessage sucess')
+          },
+          cancel: function () {
+            console.log('ShareAppMessage failed')
+          }
+        })
+      });
+      wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+        wx.onMenuShareTimeline({
+          title: '张奥和胡芮的婚礼', // 分享标题
+          desc: '张奥和胡芮的婚礼', // 分享描述
+          link: 'https://zhangaoo.com/wedding/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号 JS 安全域名一致
+          imgUrl: 'https://zhangaoo.com/wedding/img/wedding.73c64515.jpeg', // 分享图标
+          success: function () {
+            // 设置成功
+          }
+        })
+      });        
+      
+    }).catch((e) => {
+      console.log(e);
+    });
   },
   methods: {
     // 打开邀请函
@@ -75,50 +123,7 @@ export default {
           this.$emit('sendBarrage', this.wish)
         }, 660)
       })
-    },wxRegCallback() {
-      // 用于微信JS-SDK回调
-      this.wxShareTimeline();
-      this.wxShareAppMessage();
-    },
-    wxShareTimeline() {
-      // 微信自定义分享到朋友圈
-      let option = {
-        title: "test", // 自定义分享标题
-        link: "http://zhangaoo.com", // 自定义分享路径
-        imgUrl: "",
-        success: () => {
-          // this.$toast("分享成功");
-        },
-        cancel: function () {
-          this.$toast("已取消分享");
-        },
-        error: () => {
-          this.$toast("分享失败");
-        },
-      };
-      // 将配置注入通用方法
-      wxapi.ShareTimeline(option);
-    },
-    wxShareAppMessage() {
-      // 微信自定义分享给朋友
-      let option = {
-        title: "test",
-        link: "http://zhangaoo.com",
-        imgUrl: "",
-        success: () => {
-          // this.$toast("分享成功");
-        },
-        cancel: function () {
-          this.$toast("已取消分享");
-        },
-        error: () => {
-          this.$toast("分享失败");
-        },
-      };
-      // 将配置注入通用方法
-      console.log(option, "分享链接");
-      wxapi.ShareAppMessage(option);
-    },
+    }
   }
 }
 </script>

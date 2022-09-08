@@ -11,15 +11,9 @@
              url: window.location.href
          };
          axios.get('https://springboot-ojdf-5653-4-1313699246.sh.run.tcloudbase.com/api/config', // 后台提供接口，获取 wx.config 对象内所需字段
-             data,
-             {
-                 headers: {
-                     'Content-Type': 'application/json;charset=UTF-8',
-                 }
-             }
          ).then((data) => {
              wx.config({
-                 debug: false, // 开启调试模式
+                 debug: true, // 开启调试模式
                  appId: data.data.appId, // 必填，公众号的唯一标识
                  timestamp: data.data.timestamp, // 必填，生成签名的时间戳
                  nonceStr: data.data.nonceStr, // 必填，生成签名的随机串
