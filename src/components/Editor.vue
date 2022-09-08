@@ -106,7 +106,9 @@
       },
       // 发送弹幕之后
       onAfterSending(wish) {
-        this.wish = wish
+        if(wish){
+          this.wish = wish
+        }
         this.canOpen = false
         setTimeout(() => {
           this.canStart = true

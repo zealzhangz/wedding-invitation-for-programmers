@@ -111,6 +111,7 @@
                 this.isOpening = false
                 setTimeout(() => {
                     this.$emit('onClose')
+                    this.$emit('sendBarrage', "感谢各位亲朋好友！")
                 }, 660)
             },
             // 发送弹幕
