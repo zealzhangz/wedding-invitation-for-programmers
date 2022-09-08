@@ -51,6 +51,7 @@ export default {
   },
   mounted() {
     // wxapi.wxRegister(this.wxRegCallback());
+    /**
     const headers = {
       "Content-Type": "application/json",
     };
@@ -97,7 +98,7 @@ export default {
       
     }).catch((e) => {
       console.log(e);
-    });
+    });**/
   },
   methods: {
     // 打开邀请函
