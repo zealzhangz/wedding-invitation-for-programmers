@@ -122,15 +122,15 @@
                         return
                     }
                     //保存弹幕到数据库
-                    const url = "https://springboot-ojdf-5653-4-1313699246.sh.run.tcloudbase.com/api/comment";
-                    axios.post(url, {
-                            text: this.wish
-                        }, {headers: {'Content-Type': 'application/json;charset=UTF-8'}}
-                    ).then((data) => {
-                        console.log(data.data)
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
+                    // const url = "https://springboot-ojdf-5653-4-1313699246.sh.run.tcloudbase.com/api/comment";
+                    // axios.post(url, {
+                    //         text: this.wish
+                    //     }, {headers: {'Content-Type': 'application/json;charset=UTF-8'}}
+                    // ).then((data) => {
+                    //     console.log(data.data)
+                    // }).catch(function (err) {
+                    //     console.log(err);
+                    // });
                     this.isOpening = false
                     this.$refs.wishInput.blur()
                     setTimeout(() => {
